@@ -2,14 +2,6 @@ FROM tomcat:7
 
 COPY . /setup/
 
-ENV export CATALINA_OPTS="$CATALINA_OPTS -server \
--Dfile.encoding=UTF-8 \
--Xms256m -Xmx512m -XX:PermSize=64m -XX:MaxPermSize=512m \
--Djava.awt.headless=true \
--Xloggc:$CATALINA_BASE/logs/gc.log -verbose:gc \
--XX:+PrintGCDateStamps -XX:+PrintGCDetails \
--XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=100M"
-
 RUN set -ex && \
   apt-get update && apt-get -y install \
     libxrender1 \
