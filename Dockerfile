@@ -39,3 +39,10 @@ RUN sed -i -e 's/# ko_KR.UTF-8 UTF-8/ko_KR.UTF-8 UTF-8/' /etc/locale.gen && \
     echo 'LANG="ko_KR.UTF-8"'>/etc/default/locale && \
     dpkg-reconfigure --frontend=noninteractive locales && \
     update-locale LANG=ko_KR.UTF-8
+
+# The following script resolve the really slow startup due to low entropy in virtual environment
+# https://fbrx.github.io/post/fixing-tomcat-startup-performance-on-cloud-servers/
+# https://wiki.apache.org/tomcat/HowTo/FasterStartUp
+# http://marc.info/?l=tomcat-user&m=132769606728228&w=2
+RUN echo "CATALINA_OPTS=-Djava.security.egd=file:/dev/./urandom" > /usr/local/tomcat/bin/setenv.sh && \
+    chmod a+x /usr/local/tomcat/bin/setenv.sh
