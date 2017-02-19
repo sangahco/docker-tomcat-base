@@ -28,3 +28,5 @@ if [ -n "$JMX_PORT" ]; then
     -Dcom.sun.management.jmxremote.authenticate=false \
     -Djava.rmi.server.hostname=${JMX_HOST}"
 fi
+
+echo "$CATALINA_OPTS"
