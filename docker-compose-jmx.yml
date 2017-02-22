@@ -9,3 +9,4 @@ services:
     environment: 
     - JMX_PORT
     - JMX_HOST
+    - JAVA_MAX_SIZE
