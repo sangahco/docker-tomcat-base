@@ -15,6 +15,7 @@ RUN set -ex && \
   echo "deb http://deb.debian.org/debian jessie contrib non-free" >> /etc/apt/sources.list && \
   echo "deb http://deb.debian.org/debian jessie-updates contrib non-free" >> /etc/apt/sources.list && \
   apt-get update && apt-get -y install \
+    gettext-base \
     libxrender1 \
     libxext6 \
     libx11-6 \
