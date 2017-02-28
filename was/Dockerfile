@@ -7,8 +7,8 @@ ENV PHANTOMJS=2.1.1
 
 WORKDIR /usr/local/src
 
-ADD http://dev.sangah.com/owncloud/index.php/s/kcZMl6PLxws1n7A/download phantomjs.tar.bz2
-ADD http://dev.sangah.com/owncloud/index.php/s/8XtHeBVpN4g64kW/download wkhtmltox.tar.xz
+ADD https://s3.ap-northeast-2.amazonaws.com/sangah-b1/phantomjs-${PHANTOMJS}-linux-x86_64.tar.bz2 phantomjs.tar.bz2
+ADD https://s3.ap-northeast-2.amazonaws.com/sangah-b1/wkhtmltox-${WKHTMLTOPDF}_linux-generic-amd64.tar.xz wkhtmltox.tar.xz
 
 RUN set -ex && \
   echo "deb http://security.debian.org/ jessie/updates contrib non-free" >> /etc/apt/sources.list && \
