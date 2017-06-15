@@ -2,13 +2,13 @@ FROM tomcat:7
 
 COPY . /usr/local/src/
 
-ENV WKHTMLTOPDF=0.12.4
+ENV WKHTMLTOPDF=0.12.2.1
 ENV PHANTOMJS=2.1.1
 
 WORKDIR /usr/local/src
 
 ADD https://s3.ap-northeast-2.amazonaws.com/sangah-b1/phantomjs-${PHANTOMJS}-linux-x86_64.tar.bz2 phantomjs.tar.bz2
-ADD https://s3.ap-northeast-2.amazonaws.com/sangah-b1/wkhtmltox-${WKHTMLTOPDF}_linux-generic-amd64.tar.xz wkhtmltox.tar.xz
+ADD https://s3.ap-northeast-2.amazonaws.com/sangah-b1/wkhtmltox-${WKHTMLTOPDF}_linux-jessie-amd64.deb wkhtmltox.deb
 
 RUN set -e && \
   echo "deb http://security.debian.org/ jessie/updates contrib non-free" >> /etc/apt/sources.list && \
@@ -23,14 +23,16 @@ RUN set -e && \
     libfontconfig1 \
     msttcorefonts \
     fontconfig \
+    xfonts-base \
+    xfonts-75dpi \
     locales \
     nano && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
+  dpkg -i wkhtmltox.deb && \
+  ln -s /usr/local/bin/wkhtmltopdf /usr/local/sbin/wkhtmltopdf && \
   tar -xf phantomjs.tar.bz2 && \
   cp phantomjs*/bin/phantomjs /usr/local/sbin && \
-  tar -xf wkhtmltox.tar.xz && \
-  cp wkhtmltox*/bin/wkhtmltopdf /usr/local/sbin && \
   chmod a+x /usr/local/sbin/* && \
   cp fonts/* /usr/local/share/fonts && \
   fc-cache -fv && \
