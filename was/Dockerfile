@@ -30,7 +30,6 @@ RUN set -e && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
   dpkg -i wkhtmltox.deb && \
-  ln -s /usr/local/bin/wkhtmltopdf /usr/local/sbin/wkhtmltopdf && \
   tar -xf phantomjs.tar.bz2 && \
   cp phantomjs*/bin/phantomjs /usr/local/sbin && \
   chmod a+x /usr/local/sbin/* && \
