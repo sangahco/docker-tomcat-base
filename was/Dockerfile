@@ -1,4 +1,4 @@
-FROM tomcat:7
+FROM tomcat:7-jre8
 
 COPY . /usr/local/src/
 
