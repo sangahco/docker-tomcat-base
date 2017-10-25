@@ -1,4 +1,4 @@
-FROM tomcat:7
+FROM tomcat:7-jre8
 
 COPY . /usr/local/src/
 
@@ -8,13 +8,15 @@ ENV PHANTOMJS=2.1.1
 WORKDIR /usr/local/src
 
 ADD https://s3.ap-northeast-2.amazonaws.com/sangah-b1/phantomjs-${PHANTOMJS}-linux-x86_64.tar.bz2 phantomjs.tar.bz2
-ADD https://s3.ap-northeast-2.amazonaws.com/sangah-b1/wkhtmltox-${WKHTMLTOPDF}_linux-jessie-amd64.deb wkhtmltox.deb
+ADD https://s3.ap-northeast-2.amazonaws.com/sangah-b1/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz wkhtmltox.tar.xz
 
 RUN set -e && \
   echo "deb http://security.debian.org/ jessie/updates contrib non-free" >> /etc/apt/sources.list && \
   echo "deb http://deb.debian.org/debian jessie contrib non-free" >> /etc/apt/sources.list && \
   echo "deb http://deb.debian.org/debian jessie-updates contrib non-free" >> /etc/apt/sources.list && \
+  apt-get remove -y libssl1.1 && \
   apt-get update && apt-get -y install \
+    zlib1g \
     gettext-base \
     libxrender1 \
     libxext6 \
@@ -26,10 +28,11 @@ RUN set -e && \
     xfonts-base \
     xfonts-75dpi \
     locales \
-    nano && \
+    vi && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
-  dpkg -i wkhtmltox.deb && \
+  tar -xvf wkhtmltox.tar.xz && cp wkhtmltox/bin/wkhtmltopdf /usr/local/bin && \
+  #dpkg -i wkhtmltox.deb && \
   ln -s /usr/local/bin/wkhtmltopdf /usr/local/sbin/wkhtmltopdf && \
   tar -xf phantomjs.tar.bz2 && \
   cp phantomjs*/bin/phantomjs /usr/local/sbin && \
