@@ -46,4 +46,16 @@ RUN set -e && \
   rm -rf /var/lib/apt/lists/* && \
   rm -rf /usr/local/src
 
+# install Java 8
+RUN set -e && \
+  echo "deb http://http.debian.net/debian jessie-backports main" >> /etc/apt/sources.list && \
+  apt-get update && apt-get -y install -t jessie-backports \ 
+    openjdk-8-jdk && \
+  apt-get remove -y openjdk-7-* && \
+  rm /docker-java-home && ln -s /usr/lib/jvm/java-8-openjdk-amd64 /docker-java-home && \
+  apt-get -y autoremove && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/* && \
+  rm -rf /usr/local/src
+
 WORKDIR /usr/local/tomcat
