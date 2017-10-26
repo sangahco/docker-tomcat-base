@@ -1,4 +1,4 @@
-FROM tomcat:7-jre8
+FROM tomcat:7
 
 COPY . /usr/local/src/
 
@@ -14,7 +14,7 @@ RUN set -e && \
   echo "deb http://security.debian.org/ jessie/updates contrib non-free" >> /etc/apt/sources.list && \
   echo "deb http://deb.debian.org/debian jessie contrib non-free" >> /etc/apt/sources.list && \
   echo "deb http://deb.debian.org/debian jessie-updates contrib non-free" >> /etc/apt/sources.list && \
-  apt-get remove -y libssl1.1 && \
+  #apt-get remove -y libssl1.1 && \
   apt-get update && apt-get -y install \
     zlib1g \
     gettext-base \
