@@ -43,7 +43,7 @@ RUN set -e && \
   update-locale LANG=ko_KR.UTF-8 && \
   cp setenv.sh /usr/local/tomcat/bin && \
   chmod a+x /usr/local/tomcat/bin/setenv.sh && \
-  apt-get autoremove && \
+  apt-get -y autoremove && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
   rm -rf /usr/local/src
