@@ -25,8 +25,6 @@ RUN set -e && \
     libfontconfig1 \
     msttcorefonts \
     fontconfig \
-    xfonts-base \
-    xfonts-75dpi \
     locales \
     nano && \
   tar -xvf wkhtmltox.tar.xz && \
