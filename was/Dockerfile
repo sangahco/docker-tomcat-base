@@ -1,4 +1,4 @@
-FROM tomcat:7
+FROM tomcat:7-jre8
 
 COPY . /usr/local/src/
 
@@ -16,6 +16,8 @@ RUN set -e && \
   echo "deb http://deb.debian.org/debian jessie-updates contrib non-free" >> /etc/apt/sources.list && \
   #apt-get remove -y libssl1.1 && \
   apt-get update && apt-get -y install \
+    libssl1.0.2 \
+    libssl1.0-dev \
     zlib1g \
     gettext-base \
     libxrender1 \
@@ -41,18 +43,6 @@ RUN set -e && \
   update-locale LANG=ko_KR.UTF-8 && \
   cp setenv.sh /usr/local/tomcat/bin && \
   chmod a+x /usr/local/tomcat/bin/setenv.sh && \
-  apt-get -y autoremove && \
-  apt-get clean && \
-  rm -rf /var/lib/apt/lists/* && \
-  rm -rf /usr/local/src
-
-# install Java 8
-RUN set -e && \
-  echo "deb http://http.debian.net/debian jessie-backports main" >> /etc/apt/sources.list && \
-  apt-get update && apt-get -y install -t jessie-backports \ 
-    openjdk-8-jdk && \
-  apt-get remove -y openjdk-7-* && \
-  rm /docker-java-home && ln -s /usr/lib/jvm/java-8-openjdk-amd64 /docker-java-home && \
   apt-get -y autoremove && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
