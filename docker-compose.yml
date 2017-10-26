@@ -9,3 +9,8 @@ services:
     - JAVA_MAX_SIZE
     volumes:
     - $PWD/tmp:/mnt/tmp
+
+  # the service will generate a pdf file from the file test.html inside tmp folder
+  pdftest:
+    extends: was
+    command: wkhtmltopdf /mnt/tmp/test.html /mnt/tmp/test.pdf

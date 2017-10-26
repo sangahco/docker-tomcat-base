@@ -28,9 +28,7 @@ RUN set -e && \
     xfonts-base \
     xfonts-75dpi \
     locales \
-    vi && \
-  apt-get clean && \
-  rm -rf /var/lib/apt/lists/* && \
+    nano && \
   tar -xvf wkhtmltox.tar.xz && cp wkhtmltox/bin/wkhtmltopdf /usr/local/bin && \
   #dpkg -i wkhtmltox.deb && \
   ln -s /usr/local/bin/wkhtmltopdf /usr/local/sbin/wkhtmltopdf && \
@@ -45,6 +43,9 @@ RUN set -e && \
   update-locale LANG=ko_KR.UTF-8 && \
   cp setenv.sh /usr/local/tomcat/bin && \
   chmod a+x /usr/local/tomcat/bin/setenv.sh && \
+  apt-get autoremove && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/* && \
   rm -rf /usr/local/src
 
 WORKDIR /usr/local/tomcat
