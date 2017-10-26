@@ -1,4 +1,4 @@
-FROM tomcat:7
+FROM tomcat:7-jre8
 
 COPY . /usr/local/src/
 
@@ -14,7 +14,9 @@ RUN set -e && \
   echo "deb http://security.debian.org/ jessie/updates contrib non-free" >> /etc/apt/sources.list && \
   echo "deb http://deb.debian.org/debian jessie contrib non-free" >> /etc/apt/sources.list && \
   echo "deb http://deb.debian.org/debian jessie-updates contrib non-free" >> /etc/apt/sources.list && \
+  apt-get remove -y libssl1.1 && \
   apt-get update && apt-get -y install \
+    zlib1g \
     gettext-base \
     libxrender1 \
     libxext6 \
@@ -25,12 +27,11 @@ RUN set -e && \
     fontconfig \
     locales \
     nano && \
-  apt-get clean && \
-  rm -rf /var/lib/apt/lists/* && \
+  tar -xvf wkhtmltox.tar.xz && \
+  cp wkhtmltox*/bin/wkhtmltopdf /usr/local/bin && \
+  ln -s /usr/local/bin/wkhtmltopdf /usr/local/sbin/wkhtmltopdf && \
   tar -xf phantomjs.tar.bz2 && \
   cp phantomjs*/bin/phantomjs /usr/local/sbin && \
-  tar -xf wkhtmltox.tar.xz && \
-  cp wkhtmltox*/bin/wkhtmltopdf /usr/local/sbin && \
   chmod a+x /usr/local/sbin/* && \
   cp fonts/* /usr/local/share/fonts && \
   fc-cache -fv && \
@@ -40,6 +41,9 @@ RUN set -e && \
   update-locale LANG=ko_KR.UTF-8 && \
   cp setenv.sh /usr/local/tomcat/bin && \
   chmod a+x /usr/local/tomcat/bin/setenv.sh && \
+  apt-get -y autoremove && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/* && \
   rm -rf /usr/local/src
 
 WORKDIR /usr/local/tomcat
