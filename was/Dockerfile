@@ -30,20 +30,26 @@ RUN set -e && \
     fontconfig \
     locales \
     nano && \
+  # wkhtmltopdf setup
   tar -xvf wkhtmltox.tar.xz && \
   cp wkhtmltox*/bin/wkhtmltopdf /usr/local/bin && \
   ln -s /usr/local/bin/wkhtmltopdf /usr/local/sbin/wkhtmltopdf && \
+  # phantomjs setup
   tar -xf phantomjs.tar.bz2 && \
   cp phantomjs*/bin/phantomjs /usr/local/sbin && \
   chmod a+x /usr/local/sbin/* && \
+  # fonts setup
   cp fonts/* /usr/local/share/fonts && \
   fc-cache -fv && \
+  # locale setup
   sed -i -e 's/# ko_KR.UTF-8 UTF-8/ko_KR.UTF-8 UTF-8/' /etc/locale.gen && \
   echo 'LANG="ko_KR.UTF-8"'>/etc/default/locale && \
   dpkg-reconfigure --frontend=noninteractive locales && \
   update-locale LANG=ko_KR.UTF-8 && \
+  # tomcat setup
   cp setenv.sh /usr/local/tomcat/bin && \
   chmod a+x /usr/local/tomcat/bin/setenv.sh && \
+  # cleanup
   apt-get -y autoremove && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
