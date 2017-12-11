@@ -16,6 +16,7 @@ RUN set -e && \
   echo "deb http://deb.debian.org/debian stretch-updates contrib non-free" >> /etc/apt/sources.list && \
   #apt-get remove -y libssl1.1 && \
   apt-get update && apt-get -y install \
+    # libssl1.0.2 and libssl1.0-dev are required by wkhtmltopdf
     libssl1.0.2 \
     libssl1.0-dev \
     zlib1g \
