@@ -52,6 +52,7 @@ RUN set -e && \
   echo "deb http://http.debian.net/debian jessie-backports main" >> /etc/apt/sources.list && \
   apt-get update && apt-get -y install -t jessie-backports \ 
     openjdk-8-jdk \
+    # libssl-dev 1.0.1 is required for wkhtmltopdf (do not install 1.1)
     libssl-dev=1.0.1t-1+deb8u7 && \
   rm /docker-java-home && ln -s /usr/lib/jvm/java-8-openjdk-amd64 /docker-java-home && \
   apt-get -y autoremove && \
