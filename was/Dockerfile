@@ -48,10 +48,11 @@ RUN set -e && \
 
 # install Java 8
 RUN set -e && \
+  apt-get remove -y openjdk-7-* && \
   echo "deb http://http.debian.net/debian jessie-backports main" >> /etc/apt/sources.list && \
   apt-get update && apt-get -y install -t jessie-backports \ 
-    openjdk-8-jdk && \
-  apt-get remove -y openjdk-7-* && \
+    openjdk-8-jdk \
+    libssl-dev=1.0.1t-1+deb8u7 && \
   rm /docker-java-home && ln -s /usr/lib/jvm/java-8-openjdk-amd64 /docker-java-home && \
   apt-get -y autoremove && \
   apt-get clean && \
