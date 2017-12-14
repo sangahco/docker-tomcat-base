@@ -8,9 +8,17 @@ services:
     environment: 
     - JAVA_MAX_SIZE
 
-  # the service will generate a pdf file from the file test.html inside tmp folder
+  # PDF generator with wkhtmltopdf
   pdftest:
     build: was
     volumes:
     - $PWD/tmp:/mnt/tmp
-    command: wkhtmltopdf --zoom 1.2 -s A4 --print-media-type /mnt/tmp/test.html /mnt/tmp/test.pdf
+    command: wkhtmltopdf --zoom 1.2 -s A4 --print-media-type -L 10 -R 10 -T 16 -B 16 /mnt/tmp/test.html /mnt/tmp/test.pdf
+
+  # PDF generator with PhantomJS
+  pdftest2:
+    build: was
+    volumes:
+    - $PWD/tmp:/mnt/tmp
+    - $PWD/was/etc/html2pdf.js:/usr/share/phantomjs/script/html2pdf.js
+    command: phantomjs --debug true --web-security=false --ignore-ssl-errors=true /usr/share/phantomjs/script/html2pdf.js /mnt/tmp/test.html /mnt/tmp/test2.pdf

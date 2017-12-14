@@ -1,3 +1,8 @@
+[![HitCount](http://hits.dwyl.io/sangahco/sangahco/docker-tomcat-base.svg)](http://hits.dwyl.io/sangahco/sangahco/docker-tomcat-base)
+[![Jenkins](https://img.shields.io/jenkins/s/https/dev.builder.sangah.com/job/tomcat-base.svg?style=flat-square&label=stable)]()
+[![Jenkins](https://img.shields.io/jenkins/s/https/dev.builder.sangah.com/job/tomcat-base-jessie-jre8.svg?style=flat-square&label=jessie-jre8)]()
+[![Jenkins](https://img.shields.io/jenkins/s/https/dev.builder.sangah.com/job/tomcat-base-stretch-jre8.svg?style=flat-square&label=stretch-jre8)]()
+
 # Base Tomcat Image for PMIS Application
 
 This image contains an *Apache Tomcat* environment with *PhantomJS* and *wkhtmltopdf* 
