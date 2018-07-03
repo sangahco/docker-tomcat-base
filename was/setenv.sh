@@ -18,15 +18,15 @@ if [ -z "$JMX_HOST" ]; then
     JMX_HOST=$HOSTNAME
 fi
 
-# if [ -n "$JMX_PORT" ]; then
-#     CATALINA_OPTS="$CATALINA_OPTS \
-#     -Dcom.sun.management.jmxremote=true \
-#     -Dcom.sun.management.jmxremote.local.only=false \
-#     -Dcom.sun.management.jmxremote.port=${JMX_PORT} \
-#     -Dcom.sun.management.jmxremote.rmi.port=${JMX_PORT} \
-#     -Dcom.sun.management.jmxremote.ssl=false \
-#     -Dcom.sun.management.jmxremote.authenticate=false \
-#     -Djava.rmi.server.hostname=${JMX_HOST}"
-# fi
+if [ -n "$JMX_PORT" ]; then
+    CATALINA_OPTS="$CATALINA_OPTS \
+    -Dcom.sun.management.jmxremote=true \
+    -Dcom.sun.management.jmxremote.local.only=false \
+    -Dcom.sun.management.jmxremote.port=${JMX_PORT} \
+    -Dcom.sun.management.jmxremote.rmi.port=${JMX_PORT} \
+    -Dcom.sun.management.jmxremote.ssl=false \
+    -Dcom.sun.management.jmxremote.authenticate=false \
+    -Djava.rmi.server.hostname=${JMX_HOST}"
+fi
 
 echo "$CATALINA_OPTS"
