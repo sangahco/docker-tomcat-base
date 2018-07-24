@@ -1,4 +1,4 @@
-FROM tomcat:7
+FROM tomcat:7.0.88
 LABEL maintainer="Emanuele Disco <emanuele.disco@gmail.com>"
 
 COPY . /usr/local/src/
