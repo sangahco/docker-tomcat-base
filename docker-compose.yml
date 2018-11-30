@@ -9,16 +9,24 @@ services:
     - JAVA_MAX_SIZE
 
   # PDF generator with wkhtmltopdf
-  pdftest:
+  htmltopdf-wkhtmltopdf:
     build: was
     volumes:
     - $PWD/tmp:/mnt/tmp
     command: wkhtmltopdf --zoom 1.2 -s A4 --print-media-type -L 10 -R 10 -T 16 -B 16 /mnt/tmp/test.html /mnt/tmp/test.pdf
 
   # PDF generator with PhantomJS
-  pdftest2:
+  htmltopdf-phantom:
     build: was
     volumes:
     - $PWD/tmp:/mnt/tmp
-    - $PWD/was/etc/html2pdf.js:/usr/share/phantomjs/script/html2pdf.js
-    command: phantomjs --debug true --web-security=false --ignore-ssl-errors=true /usr/share/phantomjs/script/html2pdf.js /mnt/tmp/test.html /mnt/tmp/test2.pdf
+    - $PWD/was/etc/html2pdf.js:/usr/share/phantomjs/script/script.js
+    command: phantomjs --debug true --web-security=false --ignore-ssl-errors=true /usr/share/phantomjs/script/script.js /mnt/tmp/test.html /mnt/tmp/test2.pdf
+
+  # convert html to image using phantomjs
+  htmltoimg:
+    build: was
+    volumes:
+    - $PWD/tmp:/mnt/tmp
+    - $PWD/was/etc/html2img.js:/usr/share/phantomjs/script/script.js
+    command: phantomjs --web-security=false --ignore-ssl-errors=true --debug=true /usr/share/phantomjs/script/script.js /mnt/tmp/test.html /mnt/tmp/test.jpg
