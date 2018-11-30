@@ -1,4 +1,5 @@
-FROM tomcat:7.0.88
+FROM tomcat:7.0.88-jre8
+LABEL maintainer="Emanuele Disco <emanuele.disco@gmail.com>"
 
 COPY . /usr/local/src/
 
@@ -11,11 +12,14 @@ ADD https://s3.ap-northeast-2.amazonaws.com/sangah-b1/phantomjs-${PHANTOMJS}-lin
 ADD https://s3.ap-northeast-2.amazonaws.com/sangah-b1/wkhtmltox-${WKHTMLTOPDF}_linux-generic-amd64.tar.xz wkhtmltox.tar.xz
 
 RUN set -e && \
-  echo "deb http://security.debian.org/ jessie/updates contrib non-free" >> /etc/apt/sources.list && \
-  echo "deb http://deb.debian.org/debian jessie contrib non-free" >> /etc/apt/sources.list && \
-  echo "deb http://deb.debian.org/debian jessie-updates contrib non-free" >> /etc/apt/sources.list && \
+  echo "deb http://security.debian.org/ stretch/updates contrib non-free" >> /etc/apt/sources.list && \
+  echo "deb http://deb.debian.org/debian stretch contrib non-free" >> /etc/apt/sources.list && \
+  echo "deb http://deb.debian.org/debian stretch-updates contrib non-free" >> /etc/apt/sources.list && \
   #apt-get remove -y libssl1.1 && \
   apt-get update && apt-get -y install \
+    # libssl1.0.2 and libssl1.0-dev are required by wkhtmltopdf
+    libssl1.0.2 \
+    libssl1.0-dev \
     zlib1g \
     gettext-base \
     libxrender1 \
@@ -27,20 +31,26 @@ RUN set -e && \
     fontconfig \
     locales \
     nano && \
+  # wkhtmltopdf setup
   tar -xvf wkhtmltox.tar.xz && \
   cp wkhtmltox*/bin/wkhtmltopdf /usr/local/bin && \
   ln -s /usr/local/bin/wkhtmltopdf /usr/local/sbin/wkhtmltopdf && \
+  # phantomjs setup
   tar -xf phantomjs.tar.bz2 && \
   cp phantomjs*/bin/phantomjs /usr/local/sbin && \
   chmod a+x /usr/local/sbin/* && \
+  # fonts setup
   cp fonts/* /usr/local/share/fonts && \
   fc-cache -fv && \
+  # locale setup
   sed -i -e 's/# ko_KR.UTF-8 UTF-8/ko_KR.UTF-8 UTF-8/' /etc/locale.gen && \
   echo 'LANG="ko_KR.UTF-8"'>/etc/default/locale && \
   dpkg-reconfigure --frontend=noninteractive locales && \
   update-locale LANG=ko_KR.UTF-8 && \
+  # tomcat setup
   cp setenv.sh /usr/local/tomcat/bin && \
   chmod a+x /usr/local/tomcat/bin/setenv.sh && \
+  # cleanup
   apt-get -y autoremove && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
