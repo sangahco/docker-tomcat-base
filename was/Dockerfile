@@ -11,7 +11,6 @@ RUN set -e && \
   echo "deb http://cdn-fastly.deb.debian.org/debian/ jessie main" > /etc/apt/sources.list && \
   echo "deb http://security.debian.org/debian-security jessie/updates main contrib non-free" >> /etc/apt/sources.list && \
   echo "deb http://archive.debian.org/debian jessie contrib non-free" >> /etc/apt/sources.list && \
-  echo "Acquire::Check-Valid-Until \"false\";" > /etc/apt/apt.conf.d/100disablechecks && \
   #apt-get remove -y libssl1.1 && \
   apt-get update && apt-get -y install \
     zlib1g \
@@ -50,7 +49,8 @@ RUN set -e && \
 RUN set -e && \
   apt-get remove -y openjdk-7-* && \
   echo "deb http://archive.debian.org/debian jessie-backports main" >> /etc/apt/sources.list && \
-  apt-get update && apt-get -y install -t jessie-backports \ 
+  apt-get update -o Acquire::Check-Valid-Until=false && \
+  apt-get -o Acquire::Check-Valid-Until=false -y install -t jessie-backports \ 
     openjdk-8-jdk \
     # libssl-dev 1.0.1 is required for wkhtmltopdf (do not install 1.1)
     libssl-dev=1.0.1t-1+deb8u8 && \
