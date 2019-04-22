@@ -7,13 +7,11 @@ ENV PHANTOMJS=2.1.1
 
 WORKDIR /usr/local/src
 
-ADD https://s3.ap-northeast-2.amazonaws.com/sangah-b1/phantomjs-${PHANTOMJS}-linux-x86_64.tar.bz2 phantomjs.tar.bz2
-ADD https://s3.ap-northeast-2.amazonaws.com/sangah-b1/wkhtmltox-${WKHTMLTOPDF}_linux-generic-amd64.tar.xz wkhtmltox.tar.xz
-
 RUN set -e && \
-  echo "deb http://security.debian.org/ jessie/updates contrib non-free" >> /etc/apt/sources.list && \
-  echo "deb http://deb.debian.org/debian jessie contrib non-free" >> /etc/apt/sources.list && \
-  echo "deb http://deb.debian.org/debian jessie-updates contrib non-free" >> /etc/apt/sources.list && \
+  echo "deb http://cdn-fastly.deb.debian.org/debian/ jessie main" > /etc/apt/sources.list && \
+  echo "deb http://security.debian.org/debian-security jessie/updates main contrib non-free" >> /etc/apt/sources.list && \
+  echo "deb http://archive.debian.org/debian jessie contrib non-free" >> /etc/apt/sources.list && \
+  echo "Acquire::Check-Valid-Until \"false\";" > /etc/apt/apt.conf.d/100disablechecks && \
   #apt-get remove -y libssl1.1 && \
   apt-get update && apt-get -y install \
     zlib1g \
@@ -27,6 +25,8 @@ RUN set -e && \
     fontconfig \
     locales \
     nano && \
+  curl https://s3.ap-northeast-2.amazonaws.com/sangah-b1/phantomjs-${PHANTOMJS}-linux-x86_64.tar.bz2 phantomjs.tar.bz2 && \
+  curl https://s3.ap-northeast-2.amazonaws.com/sangah-b1/wkhtmltox-${WKHTMLTOPDF}_linux-generic-amd64.tar.xz wkhtmltox.tar.xz && \
   tar -xvf wkhtmltox.tar.xz && \
   cp wkhtmltox*/bin/wkhtmltopdf /usr/local/bin && \
   ln -s /usr/local/bin/wkhtmltopdf /usr/local/sbin/wkhtmltopdf && \
@@ -49,7 +49,7 @@ RUN set -e && \
 # install Java 8
 RUN set -e && \
   apt-get remove -y openjdk-7-* && \
-  echo "deb http://http.debian.net/debian jessie-backports main" >> /etc/apt/sources.list && \
+  echo "deb http://archive.debian.org/debian jessie-backports main" >> /etc/apt/sources.list && \
   apt-get update && apt-get -y install -t jessie-backports \ 
     openjdk-8-jdk \
     # libssl-dev 1.0.1 is required for wkhtmltopdf (do not install 1.1)
