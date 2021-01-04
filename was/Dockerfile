@@ -3,8 +3,9 @@ LABEL maintainer="Emanuele Disco <emanuele.disco@gmail.com>"
 
 COPY . /usr/local/src/
 
-ENV WKHTMLTOPDF=0.12.6
-ENV PHANTOMJS=2.1.1
+ENV WKHTMLTOPDF=0.12.6 \
+    PHANTOMJS=2.1.1 \
+    UMASK="0022"
 
 WORKDIR /usr/local/src
 
