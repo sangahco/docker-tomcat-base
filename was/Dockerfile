@@ -1,4 +1,4 @@
-FROM tomcat:8.5-jre11
+FROM tomcat:8.5-jdk8-openjdk
 LABEL maintainer="Emanuele Disco <emanuele.disco@gmail.com>"
 
 COPY . /usr/local/src/
@@ -12,14 +12,14 @@ ADD https://s3.ap-northeast-2.amazonaws.com/sangah-b1/phantomjs-${PHANTOMJS}-lin
 ADD https://s3.ap-northeast-2.amazonaws.com/sangah-b1/wkhtmltox-${WKHTMLTOPDF}_linux-generic-amd64.tar.xz wkhtmltox.tar.xz
 
 RUN set -e && \
-  echo "deb http://security.debian.org/ stretch/updates contrib non-free" >> /etc/apt/sources.list && \
-  echo "deb http://deb.debian.org/debian stretch contrib non-free" >> /etc/apt/sources.list && \
-  echo "deb http://deb.debian.org/debian stretch-updates contrib non-free" >> /etc/apt/sources.list && \
+  echo "deb http://security.debian.org/ buster/updates contrib non-free" >> /etc/apt/sources.list && \
+  echo "deb http://deb.debian.org/debian buster contrib non-free" >> /etc/apt/sources.list && \
+  echo "deb http://deb.debian.org/debian buster-updates contrib non-free" >> /etc/apt/sources.list && \
   #apt-get remove -y libssl1.1 && \
   apt-get update && apt-get -y install \
     # libssl1.0.2 and libssl1.0-dev are required by wkhtmltopdf
-    libssl1.0.2 \
-    libssl1.0-dev \
+    #libssl1.0.2 \
+    #libssl1.0-dev \
     zlib1g \
     gettext-base \
     libxrender1 \
