@@ -1,43 +1,51 @@
-FROM tomcat:7.0.88-jre8
+FROM tomcat:8.5-jdk8-openjdk
 LABEL maintainer="Emanuele Disco <emanuele.disco@gmail.com>"
 
 COPY . /usr/local/src/
 
-ENV WKHTMLTOPDF=0.12.4
-ENV PHANTOMJS=2.1.1
+ENV WKHTMLTOPDF=0.12.6 \
+    PHANTOMJS=2.1.1 \
+    UMASK="0022"
 
 WORKDIR /usr/local/src
 
 ADD https://s3.ap-northeast-2.amazonaws.com/sangah-b1/phantomjs-${PHANTOMJS}-linux-x86_64.tar.bz2 phantomjs.tar.bz2
-ADD https://s3.ap-northeast-2.amazonaws.com/sangah-b1/wkhtmltox-${WKHTMLTOPDF}_linux-generic-amd64.tar.xz wkhtmltox.tar.xz
+ADD https://sangah-b1.s3.ap-northeast-2.amazonaws.com/wkhtmltox_${WKHTMLTOPDF}-1.buster_amd64.deb wkhtmltox.deb
 
 RUN set -e && \
-  echo "deb http://security.debian.org/ stretch/updates contrib non-free" >> /etc/apt/sources.list && \
-  echo "deb http://deb.debian.org/debian stretch contrib non-free" >> /etc/apt/sources.list && \
-  echo "deb http://deb.debian.org/debian stretch-updates contrib non-free" >> /etc/apt/sources.list && \
+  echo "deb http://security.debian.org/ buster/updates contrib non-free" >> /etc/apt/sources.list && \
+  echo "deb http://deb.debian.org/debian buster contrib non-free" >> /etc/apt/sources.list && \
+  echo "deb http://deb.debian.org/debian buster-updates contrib non-free" >> /etc/apt/sources.list && \
   #apt-get remove -y libssl1.1 && \
   apt-get update && apt-get -y install \
     # libssl1.0.2 and libssl1.0-dev are required by wkhtmltopdf
-    libssl1.0.2 \
-    libssl1.0-dev \
-    zlib1g \
-    gettext-base \
+    #libssl1.0.2 \
+    #libssl1.0-dev \
     libxrender1 \
     libxext6 \
     libx11-6 \
-    libfreetype6 \
-    libfontconfig1 \
+    libjpeg62-turbo \
+    xfonts-75dpi \
+    xfonts-base \
     msttcorefonts \
     fontconfig \
     locales \
-    nano && \
+    nano \
+    # for phantomjs?
+    zlib1g \
+    gettext-base \
+    libfreetype6 \
+    libfontconfig1 && \
   # wkhtmltopdf setup
-  tar -xvf wkhtmltox.tar.xz && \
-  cp wkhtmltox*/bin/wkhtmltopdf /usr/local/bin && \
+  dpkg -i wkhtmltox.deb && \
   ln -s /usr/local/bin/wkhtmltopdf /usr/local/sbin/wkhtmltopdf && \
   # phantomjs setup
   tar -xf phantomjs.tar.bz2 && \
-  cp phantomjs*/bin/phantomjs /usr/local/sbin && \
+  #cp phantomjs*/bin/phantomjs /usr/local/sbin && \
+  mkdir -p /usr/share/phantomjs/bin && \
+  touch /usr/share/phantomjs/openssl.cnf && \
+  cp phantomjs*/bin/phantomjs /usr/share/phantomjs/bin && \
+  cp etc/phantomjs /usr/local/sbin && \
   chmod a+x /usr/local/sbin/* && \
   # fonts setup
   cp fonts/* /usr/local/share/fonts && \

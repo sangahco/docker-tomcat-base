@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+# this is a fix for debian buster since phantomjs try to access the file /etc/ssl/openssl.cnf, but phantomjs can't parse it.
+export OPENSSL_CONF="/usr/share/phantomjs/openssl.cnf"
+
+"/usr/share/phantomjs/bin/phantomjs" "$@"
+rc="$?"
+exit "${rc}"
