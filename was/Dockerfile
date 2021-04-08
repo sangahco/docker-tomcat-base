@@ -38,7 +38,7 @@ RUN set -e && \
     libfontconfig1 && \
   # wkhtmltopdf setup
   dpkg -i wkhtmltox.deb && \
-  #ln -s /usr/local/bin/wkhtmltopdf /usr/local/sbin/wkhtmltopdf && \
+  ln -s /usr/local/bin/wkhtmltopdf /usr/local/sbin/wkhtmltopdf && \
   # phantomjs setup
   tar -xf phantomjs.tar.bz2 && \
   #cp phantomjs*/bin/phantomjs /usr/local/sbin && \
