@@ -13,9 +13,9 @@ ADD https://s3.ap-northeast-2.amazonaws.com/sangah-b1/phantomjs-${PHANTOMJS}-lin
 ADD https://sangah-b1.s3.ap-northeast-2.amazonaws.com/wkhtmltox_${WKHTMLTOPDF}-1.buster_amd64.deb wkhtmltox.deb
 
 RUN set -e && \
-  echo "deb http://security.debian.org/ buster/updates contrib non-free" >> /etc/apt/sources.list && \
-  echo "deb http://deb.debian.org/debian buster contrib non-free" >> /etc/apt/sources.list && \
-  echo "deb http://deb.debian.org/debian buster-updates contrib non-free" >> /etc/apt/sources.list && \
+  echo "deb http://security.debian.org/debian-security bullseye-security/updates contrib non-free" >> /etc/apt/sources.list && \
+  echo "deb http://deb.debian.org/debian bullseye contrib non-free" >> /etc/apt/sources.list && \
+  echo "deb http://deb.debian.org/debian bullseye-updates contrib non-free" >> /etc/apt/sources.list && \
   #apt-get remove -y libssl1.1 && \
   apt-get update && apt-get -y install \
     # libssl1.0.2 and libssl1.0-dev are required by wkhtmltopdf
